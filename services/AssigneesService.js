@@ -23,16 +23,7 @@ const assigneesService = () => {
         .then(r => {
           model.assignees.bulkCreate(assignees)
             .then(async (result) => {
-              resolve(new Promise((resolve, reject) => {
-                const returnAssigneeData = [];
-                assignees.map(async (ass) => {
-                  console.log('===================', ass.userId)
-                  const userData = await userService().getOne(ass.userId);
-                  returnAssigneeData.push(userData);  
-                });
-                resolve(returnAssigneeData);
-              }));
-
+              resolve(result);
             })
             .catch(error => reject(error));
         })
