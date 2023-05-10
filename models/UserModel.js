@@ -18,6 +18,8 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = (models) => {
     models.user.hasMany(models.workflow);
+    models.user.hasMany(models.idea);
+    models.user.hasMany(models.assignees);
   };
 
   return User;

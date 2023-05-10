@@ -3,7 +3,6 @@
 // const imageUtils = require('../utils/ImageUtil');
 
 const authMdwr = require('../middlewares/AuthMiddleware');
-const userController = require('../controllers/UserController');
 const workflowController = require('../controllers/WorkflowController');
 
 module.exports = (router) => {
