@@ -8,6 +8,15 @@ const authService = require('../services/AuthService');
 const userServcie = require('../services/UserService');
 
 const UserController = () => {
+  const getAll = async (req, res, next) => {
+    try {
+      const users = await userServcie().getAll();
+      return res.r(users);
+    } catch (error) {
+      return next(error);
+    }
+  }
+
   const signup = async (req, res, next) => {
     let result;
 
@@ -73,6 +82,7 @@ const UserController = () => {
   };
 
   return {
+    getAll,
     signup,
     signin
   };

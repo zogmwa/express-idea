@@ -6,6 +6,9 @@ const authMdwr = require('../middlewares/AuthMiddleware');
 const userController = require('../controllers/UserController');
 
 module.exports = (router) => {
+  router.route('/users')
+    .get(authMdwr().auth, userController().getAll);
+
   router.route('/users/signup')
     .post(userController().signup);
 

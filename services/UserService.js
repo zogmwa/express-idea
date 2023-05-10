@@ -4,6 +4,13 @@ const util = require('../utils/Crypto');
 
 
 const userService = () => {
+  const getAll = () => {
+    return new Promise((reslove, reject) => {
+      model.user.findAll({ attributes: ['id', 'username'] })
+        .then(result => reslove(result))
+        .catch(error => reject(error));
+    });
+  }
 
   const getSalt = (username) => {
     return new Promise((resolve, reject) => {
@@ -68,6 +75,7 @@ const userService = () => {
   };
 
   return {
+    getAll,
     getSalt,
     signUp,
     signIn,
