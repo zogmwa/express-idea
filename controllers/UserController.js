@@ -8,12 +8,10 @@ const authService = require('../services/AuthService');
 const userServcie = require('../services/UserService');
 
 const UserController = () => {
-
   const signup = async (req, res, next) => {
     let result;
 
     try {
-      console.log(req.body)
       const { pw, salt } = util.doCipher(req.body.password);
 
       const userData = {
@@ -25,7 +23,6 @@ const UserController = () => {
 
       await userServcie().isExistUser(userData.username);
       const user = await userServcie().signUp(userData);
-      console.log(user)
       const token = authService().issue({
         id: user.id, 
         username: user.username
@@ -52,8 +49,8 @@ const UserController = () => {
       const salt = await userServcie().getSalt(req.body.username);
 
       const userData = {
-        pw: util.doCipher(req.body.password, salt).pw,
-        fcmToken: req.body.fcmtoken
+        username: req.body.username,
+        pw: util.doCipher(req.body.password, salt).pw
       };
 
       // If valid user, then return the jwt

@@ -7,8 +7,6 @@ const authService = require('../services/AuthService');
  ********************/
 const AuthMiddleware = () => {
   const auth = (req, res, next) => {
-    console.log('req.headers', req.headers.authorization)
-
     if (!req.headers.authorization) {
       return next(401);
     }
@@ -24,6 +22,7 @@ const AuthMiddleware = () => {
     })
 
   };
+  
   return { auth };
 };
 

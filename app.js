@@ -1,4 +1,3 @@
-console.log('asdf')
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
@@ -14,8 +13,6 @@ if (env === undefined) {
   console.log('SET NODE_EV!!! development or test or production');
   process.exit(1);
 }
-
-console.log(env)
 
 const model = require('./models');
 

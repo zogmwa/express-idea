@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.associate = (models) => {
-    // models.User.hasMany(models.Post);
+    models.user.hasMany(models.workflow);
   };
 
   return User;

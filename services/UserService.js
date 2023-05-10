@@ -34,8 +34,8 @@ const userService = () => {
       })
     })
   };
+  
   const signUp = async (userData) => {
-    console.log(userData)
     return new Promise((resolve, reject) => {
       model.user.create(userData)
         .then(result => resolve(result))

@@ -23,6 +23,12 @@
     "description": "Unregistered user",
     "message": "not_signin"
   },
+  "1403": {
+    "isSuccess": false,
+    "status": 400,
+    "description": "Unregistered data",
+    "message": ""
+  },
   "9401": {
     "isSuccess": false,
     "status": 400,

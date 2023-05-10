@@ -11,9 +11,7 @@ const authService = () => {
   const issue = (payload) => jwt.sign(payload, secret, { expiresIn: "100h" });
 
   const verify = (token, done) => {
-    console.log(token)
     jwt.verify(token, secret, {}, async (err, decoded) => {
-      console.log(decoded)
       if (err) {
         switch (err.message) {
           case 'jwt expired':
