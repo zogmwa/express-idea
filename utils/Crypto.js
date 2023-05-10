@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 
 /*******
- * 난수 생성 함수
+ * Create landom string
  * @returns {string}
  */
 const randomString = () => {
@@ -20,14 +20,12 @@ const randomString = () => {
  * Crypto
  *************/
 exports.doCipher = (inputPass, salt = randomString()) => {
-
     const iterations = 100;
     const keylen = 24;
     
-    const derivedKey = crypto.pbkdf2Sync(inputPass, salt, iterations, keylen, 'sha512');
-    const pw = Buffer(derivedKey, 'binary').toString('hex');
+    const derivedKey = crypto.createHash("sha256").update(inputPass + "|" + salt).digest("hex");
+    const pw = new Buffer(derivedKey, 'binary').toString('hex');
     
-    // const result = { pw, salt };
     return { pw, salt };
 };
 
@@ -35,7 +33,7 @@ exports.doCipher = (inputPass, salt = randomString()) => {
  * jwt
  *************/
 exports.jwt = {
-    cert: "aksguraksgur"
+    cert: "secret"
 };
 
 

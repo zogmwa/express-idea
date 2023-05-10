@@ -7,12 +7,14 @@ const authService = require('../services/AuthService');
  ********************/
 const AuthMiddleware = () => {
   const auth = (req, res, next) => {
+    console.log('req.headers', req.headers.authorization)
 
-    if (!req.headers.token) {
+    if (!req.headers.authorization) {
       return next(401);
     }
 
-    authService().verify(req.headers.token, (err, userId) => {
+    const token = req.headers.authorization.split(' ')[1];
+    authService().verify(token, (err, userId) => {
       if (err) {
         return next(err);
       } else {
@@ -22,7 +24,7 @@ const AuthMiddleware = () => {
     })
 
   };
-  return {auth};
+  return { auth };
 };
 
 module.exports = AuthMiddleware;

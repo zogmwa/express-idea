@@ -1,20 +1,3 @@
-// exports.STATUS = {
-//   POST: {
-//     PENDING: 'PENDING',
-//     ACCEPT: 'ACCEPT',
-//     REJECT: 'REJECT',
-//     CANCEL: 'CANCEL',
-//     START: 'START'
-//   },
-//   MATCH: {
-//     PROGRESS: 'PROGRESS',
-//     DELIVER_DONE: 'DELIVER_DONE',
-//     RECEIVER_DONE: 'RECEIVER_DONE',
-//     DONE: 'DONE',
-//   }
-// };
-
-
 exports.POST_STATUS = {
   PENDING: 'PENDING',
   ACCEPT: 'ACCEPT',

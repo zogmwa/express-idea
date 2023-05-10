@@ -5,11 +5,11 @@ const util = require('../utils/Crypto');
 
 const userService = () => {
 
-  const getSalt = (phone) => {
+  const getSalt = (username) => {
     return new Promise((resolve, reject) => {
-      model.User.findOne({
+      model.user.findOne({
         where: {
-          phone
+          username
         },
         attributes: ['salt']
       })
@@ -19,39 +19,25 @@ const userService = () => {
     })
   };
 
-  // 전화번호가 가입되어있는지 체크
-  const isUsedPhone = (phone) => {
+  // Checking the already exsit user
+  const isExistUser = (username) => {
     return new Promise((resolve, reject) => {
-      model.User.findOne({
+      model.user.findOne({
         where: {
-          phone
+          username
         },
         attributes: ['id']
       }).then((result) => {
-        // 휴대폰 번호가 등록되어 있다면 reject
-        // 없는 번호라면 resolve
+        // if user exsit - reject
+        // else - resolve
         result ? reject(1401) : resolve(true);
       })
     })
   };
-
-  const getUserProfile = (phone) => {
-    return new Promise((resolve, reject) => {
-      model.User.findOne({
-        where: {
-          phone
-        },
-        attributes: ['id']
-      })
-        .then((result) => {
-          result ? resolve(result) : reject(1402);
-        })
-    })
-  };
-
   const signUp = async (userData) => {
+    console.log(userData)
     return new Promise((resolve, reject) => {
-      model.User.create(userData)
+      model.user.create(userData)
         .then(result => resolve(result))
         .catch(error => reject(error));
     })
@@ -59,11 +45,11 @@ const userService = () => {
 
   const signIn = (userData) => {
     return new Promise((resolve, reject) => {
-      model.User.findOne({
+      model.user.findOne({
         where: {
-          [Op.and]: [{phone: userData.phone}, {password: userData.pw}]
+          [Op.and]: [{username: userData.username}, {password: userData.pw}]
         },
-        attributes: ['id', 'phone', 'avatar', 'username']
+        attributes: ['id', 'username']
       })
         .then((result) => {
           result ? resolve(result) : reject(400);
@@ -73,9 +59,9 @@ const userService = () => {
 
   const updateFcmToken = (userData) => {
     return new Promise((resolve, reject) => {
-      model.User.update(
+      model.user.update(
         {fcmToken: userData.fcmToken},
-        {where: {[Op.and]: [{phone: userData.phone}, {password: userData.pw}]}})
+        {where: {[Op.and]: [{username: userData.username}, {password: userData.pw}]}})
         .then(result => resolve(result))
         .catch(err => reject(err));
     })
@@ -85,9 +71,8 @@ const userService = () => {
     getSalt,
     signUp,
     signIn,
-    isUsedPhone,
-    getUserProfile,
-    updateFcmToken
+    updateFcmToken,
+    isExistUser
   };
 };
 

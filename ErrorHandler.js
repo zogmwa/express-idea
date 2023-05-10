@@ -4,7 +4,7 @@ const errors = require('./errors');
 const env = process.env.NODE_ENV;
 
 
-// TODO ErrorHandler 환경에 따라 분리
+// TODO: ErrorHandler
 module.exports = (app) => {
   const error_code = {
     INVALID_PARAMETER: 9401,
@@ -12,20 +12,20 @@ module.exports = (app) => {
   };
 
   app.use((err, req, res, next) => {
-    // 에러 로그
+    // Error log
     if (env !== 'test') {
       log.error(`\n\x1b[31m[ERROR Handler] \u001b[0m \n\x1b[34m[Request PATH - ${req.path}] \u001b[0m \n`, err);
     }
 
 
     let miss_param = false;
-    if (err instanceof expressValidation.ValidationError) {  // 잘못된 파라미터 확인
+    if (err instanceof expressValidation.ValidationError) {  // Checking the parameter validation
       miss_param = err.errors.map(error => error.messages.join('. ')).join('\n');
       if (env !== 'test') {
         console.log(`\n\x1b[36m[Miss Params] \u001b[0m \n${miss_param}`);
       }
       err = error_code.INVALID_PARAMETER;
-    } else if (isNaN(err)) {  // 서버쪽 에러
+    } else if (isNaN(err)) {  // Server error
       err = error_code.SERVER_ERROR;
     }
 

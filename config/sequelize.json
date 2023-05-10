@@ -2,21 +2,11 @@
   "development": {
     "username": "root",
     "password": "",
-    "database": "",
+    "database": "idea",
     "host": "127.0.0.1",
     "dialect": "mysql",
     "logging": true,
-    "timezone": "+09:00",
-    "operatorsAliases": false
-  },
-  "test": {
-    "username": "root",
-    "password": "",
-    "database": "",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
-    "logging": false,
-    "timezone": "+09:00",
+    "timezone": "-04:00",
     "operatorsAliases": false
   },
   "production": {
@@ -26,7 +16,7 @@
     "host": "",
     "dialect": "mysql",
     "logging": false,
-    "timezone": "+09:00",
+    "timezone": "-04:00",
     "operatorsAliases": false
   }
 }

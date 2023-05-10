@@ -36,6 +36,8 @@ $ git clone https://github.com/ManHyuk/express-sequelize-boilerplate.git
 $ cd express-sequelize-boilerplate
 
 $ rm -rf .git
+
+$ npm install -g nodemon
 ```
 
 2. Install module

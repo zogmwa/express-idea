@@ -7,15 +7,14 @@ module.exports = {
   // POST - /users/signup
   signup: {
     body: {
-      phone: Joi.string().regex(/^[A-Za-z0-9+]*$/).required(),
-      username: Joi.string(),
+      username: Joi.string().required(),
       password: Joi.string().required()
     }
   },
   // POST - /users/signin
   signin: {
     body: {
-      phone: Joi.string().regex(/^[A-Za-z0-9+]*$/).required(),
+      username: Joi.string().required(),
       password: Joi.string().required()
     }
   },

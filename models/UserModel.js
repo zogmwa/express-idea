@@ -1,19 +1,11 @@
 'use strict';
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    phone: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING
-    },
+  const User = sequelize.define('user', {
     username: {
       type: DataTypes.STRING
     },
-    avatar: {
+    password: {
       type: DataTypes.STRING
     },
     salt: {
@@ -28,9 +20,5 @@ module.exports = (sequelize, DataTypes) => {
     // models.User.hasMany(models.Post);
   };
 
-
-
-
   return User;
-
 };

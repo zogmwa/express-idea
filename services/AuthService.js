@@ -1,16 +1,19 @@
 const jwt = require('jsonwebtoken');
 
 
-// TODO secret키 변경
+// Todo: change security key
 const JWT_SECRET_KEY = process.env.JWT_SECRET || 'secret';
 const secret = process.env.NODE_ENV === 'production' ? JWT_SECRET_KEY : 'secret';
 
 const model = require('../models');
 
 const authService = () => {
-  const issue = (payload) => jwt.sign(payload, secret, {expiresIn: "100h"});
+  const issue = (payload) => jwt.sign(payload, secret, { expiresIn: "100h" });
+
   const verify = (token, done) => {
+    console.log(token)
     jwt.verify(token, secret, {}, async (err, decoded) => {
+      console.log(decoded)
       if (err) {
         switch (err.message) {
           case 'jwt expired':
@@ -21,17 +24,12 @@ const authService = () => {
             return done(err.message);
         }
       } else {
-        const user = await model.User.findOne({
+        const user = await model.user.findOne({
           where: {
-            phone: decoded.phone
+            username: decoded.username
           }
         });
         return user ? done(null, user.id) : done(401);
-        // if (user) {
-        //   return done(null, user.id);
-        // } else {
-        //   return done(401);
-        // }
       }
     })
   };

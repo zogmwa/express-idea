@@ -1,26 +1,21 @@
+console.log('asdf')
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const aws = require('aws-sdk');
-
 const app = express();
+require('dotenv').config();
 
-const swaggerUi = require('swagger-ui-express');
-const swaggerSpec = require('./swagger.json');
-
-
-const env = process.env.NODE_ENV;
+env = process.env.NODE_ENV;
 if (env === undefined) {
   console.log(`NODE_ENV is ${env}`);
   console.log('SET NODE_EV!!! development or test or production');
   process.exit(1);
 }
 
-
-aws.config.loadFromPath('./config/aws_config.json');
+console.log(env)
 
 const model = require('./models');
 
@@ -30,12 +25,12 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use((req, res, next) => {
+app.use('/', (req, res, next) => {
   res.r = (result) => {
     res.json({
       isSuccess: true,
       status: 200,
-      description: '성공',
+      description: '',
       message: 'success',
       result,
     });
@@ -43,24 +38,17 @@ app.use((req, res, next) => {
   next();
 });
 
-// SwaggerUi
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
 // CORS ALL ACCESS
 app.use(cors());
 
-
-
-require('./routes')(app);
-
-
+require('./routes')(app);  
 // error handler
 require('./ErrorHandler')(app);
 
-const PORT = 3000;
+const PORT = 3001;
 
 app.listen(PORT, () => {
-  // model.sequelize.sync();
+  model.sequelize.sync();
   console.info(`[ApiServer] Listening on Port ${PORT} / at ${env} Env`);
 });
 
