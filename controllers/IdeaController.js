@@ -1,6 +1,7 @@
 'use strict';
 
 const ideaService = require('../services/IdeaService');
+const assigneesService = require('../services/AssigneesService');
 
 const ideaController = () => {
   const getAll = async (req, res, next) => {
@@ -36,6 +37,18 @@ const ideaController = () => {
 
       await ideaService().isExistData(ideaData.summary);
       const idea = await ideaService().create(ideaData);
+      const assignees = req.body.assignees;
+
+      if (assignees && assignees.length > 0) {
+        const assigneeData = [];
+        assignees.map(aId => {
+          assigneeData.push({
+            userId: aId,
+            ideaId: idea.id
+          });
+        })
+        await assigneesService().assigne(assigneeData, idea.id);
+      }
 
       result = {
         id: idea.id,
@@ -43,6 +56,7 @@ const ideaController = () => {
         image: idea.image,
         reviewScore: idea.reviewScore,
         workflowId: idea.workflowId,
+        assignees: assignees
       }
 
     } catch (error) {
@@ -61,7 +75,24 @@ const ideaController = () => {
         image: req.body.image
       }
       const idea = await ideaService().update(id, ideaData);
-      return res.r(idea);
+      const assignees = req.body.assignees;
+      
+      if (assignees && assignees.length > 0) {
+        const assigneeData = [];
+        assignees.map(aId => {
+          assigneeData.push({
+            userId: aId,
+            ideaId: idea.id
+          });
+        })
+        await assigneesService().assigne(assigneeData, id);
+      }
+      return res.r({
+        summary: idea.summary,
+        workflowId: idea.workflowId,
+        image: idea.image,
+        assignees: assignees
+      });
     } catch (error) {
       return next(error);
     }
