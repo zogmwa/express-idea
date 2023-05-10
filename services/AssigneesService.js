@@ -1,14 +1,22 @@
 const model = require('../models');
 
-const userService = require('./UserService')
-
 const assigneesService = () => {
   // Getting all ideas
-  const getAll = async () => {
-    return new Promise((resolve, reject) => {
-      model.assignees.findAll({ attributes: ['id', 'userId', 'ideaId'] })
-        .then(result => resolve(result))
-        .catch(error => reject(error));
+  const getAll = async (ideaId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const result = model.sequelize.query(`
+          SELECT users.id AS userId, username, ideaId
+            FROM assignees
+          LEFT JOIN users ON assignees.userId = users.id
+          WHERE ideaId = ${ideaId};`,
+          { type: model.sequelize.QueryTypes.SELECT }
+        );
+
+        resolve(result);
+      } catch (error) {
+        reject(error);
+      }
     });
   }
 

@@ -7,7 +7,8 @@ const ideaController = () => {
   const getAll = async (req, res, next) => {
     try {
       const ideas = await ideaService().getAll();
-      return res.r(ideas);
+      const getReturnData = await ideaService().getReturnData(ideas);
+      return res.r(getReturnData);
     } catch (error) {
       return next(error);
     }
@@ -17,7 +18,16 @@ const ideaController = () => {
     try {
       const id = req.params.id;
       const idea = await ideaService().getOne(id);
-      return res.r(idea);
+      const returnAssigneeData = await assigneesService().getAll(id);
+
+      return res.r({
+        id: idea.id,
+        summary: idea.summary,
+        reviewScore: idea.reviewScore,
+        workflowId: idea.workflowId,
+        image: idea.image,
+        assignees: returnAssigneeData
+      });
     } catch (error) {
       return next(error);
     }
@@ -49,6 +59,8 @@ const ideaController = () => {
         })
         await assigneesService().assigne(assigneeData, idea.id);
       }
+      const returnAssigneeData = await assigneesService().getAll(idea.id);
+
 
       result = {
         id: idea.id,
@@ -56,7 +68,7 @@ const ideaController = () => {
         image: idea.image,
         reviewScore: idea.reviewScore,
         workflowId: idea.workflowId,
-        assignees: assignees
+        assignees: returnAssigneeData
       }
 
     } catch (error) {
@@ -87,11 +99,13 @@ const ideaController = () => {
         })
         await assigneesService().assigne(assigneeData, id);
       }
+      const returnAssigneeData = await assigneesService().getAll(idea.id);
+
       return res.r({
         summary: idea.summary,
         workflowId: idea.workflowId,
         image: idea.image,
-        assignees: assignees
+        assignees: returnAssigneeData
       });
     } catch (error) {
       return next(error);

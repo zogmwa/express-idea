@@ -1,5 +1,7 @@
 const model = require('../models');
 
+const assigneesService = require('./AssigneesService');
+
 const ideaService = () => {
   // Checking the already exsit idea
   const isExistData = (summary) => {
@@ -83,13 +85,33 @@ const ideaService = () => {
     })
   };
 
+  const getReturnData = async (ideas) => {
+    const returnData = [];
+
+    for (var idea of ideas) {
+      const returnAssigneeData = await assigneesService().getAll(idea.id);
+
+      returnData.push({
+        id: idea.id,
+        summary: idea.summary,
+        reviewScore: idea.reviewScore,
+        workflowId: idea.workflowId,
+        image: idea.image,
+        assignees: returnAssigneeData
+      });
+    }
+
+    return returnData;
+  };
+
   return {
     create,
     getAll,
     getOne,
     update,
     remove,
-    isExistData
+    isExistData,
+    getReturnData
   };
 };
 
