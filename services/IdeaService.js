@@ -58,7 +58,7 @@ const ideaService = () => {
         .then(async (result) => {
           const returnIdea = await model.idea.findOne({
             where: {
-              id: result
+              id
             },
             attributes: ['id', 'summary', 'reviewScore', 'workflowId', 'image']
           })

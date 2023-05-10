@@ -61,7 +61,7 @@ const workflowService = () => {
         .then(async (result) => {
           const returnWorkFlow = await model.workflow.findOne({
             where: {
-              id: result
+              id
             },
             attributes: ['id', 'name']
           })

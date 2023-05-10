@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     models.user.hasMany(models.workflow);
     models.user.hasMany(models.idea);
     models.user.hasMany(models.assignees);
+    models.user.hasMany(models.review);
   };
 
   return User;

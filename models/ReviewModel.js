@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Review.associate = (models) => {
     models.review.belongsTo(models.idea);
+    models.review.belongsTo(models.user);
   };
 
   return Review;
