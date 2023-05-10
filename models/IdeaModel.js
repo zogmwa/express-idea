@@ -10,13 +10,16 @@ module.exports = (sequelize, DataTypes) => {
     },
     reviewScore: {
       type: DataTypes.FLOAT
+    },
+    workflowId: {
+      type: DataTypes.INTEGER
     }
   });
 
   Idea.associate = (models) => {
     models.idea.belongsTo(models.user);
     models.idea.hasMany(models.review);
-    models.user.hasMany(models.assignees);
+    models.idea.hasMany(models.assignees);
   };
 
   return Idea;
