@@ -31,7 +31,7 @@ const workflowController = () => {
         userId: req.userId
       };
 
-      await workflowService().isExistData(workflowData.name);
+      // await workflowService().isExistData(workflowData.name);
       const workflow = await workflowService().create(workflowData);
 
       result = {

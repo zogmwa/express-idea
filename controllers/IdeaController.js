@@ -45,7 +45,7 @@ const ideaController = () => {
         userId: req.userId
       };
 
-      await ideaService().isExistData(ideaData.summary);
+      // await ideaService().isExistData(ideaData.summary);
       const idea = await ideaService().create(ideaData);
       const assignees = req.body.assignees;
 
