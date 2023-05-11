@@ -20,14 +20,15 @@ const ideaService = () => {
   };
 
   // Getting all ideas
-  const getAll = async (userId) => {
+  const getAll = async (userId, page) => {
     return new Promise((resolve, reject) => {
       try {
         const result = model.sequelize.query(`
           SELECT ideas.id, ideas.summary, ideas.reviewScore, ideas.workflowId, ideas.image, ideas.userId, ideas.createdAt, tbl_rev.score, users.username
             FROM ideas
           LEFT JOIN (SELECT * FROM reviews WHERE reviews.userId = ${userId}) AS tbl_rev ON tbl_rev.ideaId = ideas.id
-          LEFT JOIN users ON users.id = ideas.userId;`,
+          LEFT JOIN users ON users.id = ideas.userId
+          LIMIT ${page * 10}, 10;`,
           { type: model.sequelize.QueryTypes.SELECT }
         );
 
