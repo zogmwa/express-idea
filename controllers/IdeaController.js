@@ -7,7 +7,7 @@ const reviewService = require('../services/ReviewService');
 const ideaController = () => {
   const getAll = async (req, res, next) => {
     try {
-      const page = req.params.page;
+      const page = req.query.page;
       const ideas = await ideaService().getAll(req.userId, page);
       const getReturnData = await ideaService().getReturnData(ideas, req.userId);
       return res.r(getReturnData);
