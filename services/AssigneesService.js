@@ -6,10 +6,12 @@ const assigneesService = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const result = model.sequelize.query(`
-          SELECT users.id AS userId, username, ideaId
-            FROM assignees
-          LEFT JOIN users ON assignees.userId = users.id
-          WHERE ideaId = ${ideaId};`,
+          SELECT userId, username FROM (
+            SELECT users.id AS userId, username, ideaId
+              FROM assignees
+            LEFT JOIN users ON assignees.userId = users.id
+            WHERE ideaId = ${ideaId}
+          ) as t;`,
           { type: model.sequelize.QueryTypes.SELECT }
         );
 

@@ -33,7 +33,7 @@ const ideaController = () => {
       }, 0);
       
       const idea = await ideaService().update(reviewData.ideaId, {
-        reviewScore: Math.round(sum / count * 2) / 2
+        reviewScore: Math.round(sum / count)
       });
 
       result = {

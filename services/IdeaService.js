@@ -20,25 +20,41 @@ const ideaService = () => {
   };
 
   // Getting all ideas
-  const getAll = async () => {
+  const getAll = async (userId) => {
     return new Promise((resolve, reject) => {
-      model.idea.findAll({ attributes: ['id', 'summary', 'reviewScore', 'workflowId', 'image'] })
-        .then(result => resolve(result))
-        .catch(error => reject(error));
+      try {
+        const result = model.sequelize.query(`
+          SELECT ideas.id, ideas.summary, ideas.reviewScore, ideas.workflowId, ideas.image, ideas.userId, ideas.createdAt, tbl_rev.score, users.username
+            FROM ideas
+          LEFT JOIN (SELECT * FROM reviews WHERE reviews.userId = ${userId}) AS tbl_rev ON tbl_rev.ideaId = ideas.id
+          LEFT JOIN users ON users.id = ideas.userId;`,
+          { type: model.sequelize.QueryTypes.SELECT }
+        );
+
+        resolve(result);
+      } catch (error) {
+        reject(error);
+      }
     });
   }
 
   // Getting one idea
-  const getOne = async (id) => {
+  const getOne = async (id, userId) => {
     return new Promise((resolve, reject) => {
-      model.idea.findOne({
-        where: {
-          id
-        },
-        attributes: ['id', 'summary', 'reviewScore', 'workflowId', 'image']
-      })
-        .then(result => resolve(result))
-        .catch(error => reject(error));
+      try {
+        const result = model.sequelize.query(`
+          SELECT ideas.id, ideas.summary, ideas.reviewScore, ideas.workflowId, ideas.image, ideas.userId, ideas.createdAt, tbl_rev.score, users.username
+            FROM ideas
+          LEFT JOIN (SELECT * FROM reviews WHERE reviews.userId = ${userId}) AS tbl_rev ON tbl_rev.ideaId = ideas.id
+          LEFT JOIN users ON users.id = ideas.userId
+          WHERE ideas.id = ${id};`,
+          { type: model.sequelize.QueryTypes.SELECT }
+        );
+
+        resolve(result);
+      } catch (error) {
+        reject(error);
+      }
     });
   }
 
@@ -62,7 +78,7 @@ const ideaService = () => {
             where: {
               id
             },
-            attributes: ['id', 'summary', 'reviewScore', 'workflowId', 'image']
+            attributes: ['id', 'summary', 'reviewScore', 'workflowId', 'image', 'userId', 'createdAt']
           })
 
           resolve(returnIdea);
@@ -85,7 +101,7 @@ const ideaService = () => {
     })
   };
 
-  const getReturnData = async (ideas) => {
+  const getReturnData = async (ideas, userId) => {
     const returnData = [];
 
     for (var idea of ideas) {
@@ -97,7 +113,11 @@ const ideaService = () => {
         reviewScore: idea.reviewScore,
         workflowId: idea.workflowId,
         image: idea.image,
-        assignees: returnAssigneeData
+        createdAt: idea.createdAt,
+        ownerId: idea.userId,
+        ownerName: idea.username,
+        myScore: idea.score,
+        assignees: returnAssigneeData,
       });
     }
 

@@ -2,12 +2,13 @@
 
 const ideaService = require('../services/IdeaService');
 const assigneesService = require('../services/AssigneesService');
+const reviewService = require('../services/ReviewService');
 
 const ideaController = () => {
   const getAll = async (req, res, next) => {
     try {
-      const ideas = await ideaService().getAll();
-      const getReturnData = await ideaService().getReturnData(ideas);
+      const ideas = await ideaService().getAll(req.userId);
+      const getReturnData = await ideaService().getReturnData(ideas, req.userId);
       return res.r(getReturnData);
     } catch (error) {
       return next(error);
@@ -17,15 +18,19 @@ const ideaController = () => {
   const getOne = async (req, res, next) => {
     try {
       const id = req.params.id;
-      const idea = await ideaService().getOne(id);
+      const idea = await ideaService().getOne(id, req.userId);
       const returnAssigneeData = await assigneesService().getAll(id);
 
       return res.r({
-        id: idea.id,
-        summary: idea.summary,
-        reviewScore: idea.reviewScore,
-        workflowId: idea.workflowId,
-        image: idea.image,
+        id: idea[0].id,
+        summary: idea[0].summary,
+        reviewScore: idea[0].reviewScore,
+        workflowId: idea[0].workflowId,
+        image: idea[0].image,
+        createdAt: idea[0].createdAt,
+        ownerId: idea[0].userId,
+        ownerName: idea[0].username,
+        myScore: idea[0].score,
         assignees: returnAssigneeData
       });
     } catch (error) {
@@ -68,6 +73,8 @@ const ideaController = () => {
         image: idea.image,
         reviewScore: idea.reviewScore,
         workflowId: idea.workflowId,
+        createdAt: idea.createdAt,
+        ownerId: idea.userId,
         assignees: returnAssigneeData
       }
 
@@ -105,6 +112,8 @@ const ideaController = () => {
         summary: idea.summary,
         workflowId: idea.workflowId,
         image: idea.image,
+        createdAt: idea.createdAt,
+        ownerId: idea.userId,
         assignees: returnAssigneeData
       });
     } catch (error) {

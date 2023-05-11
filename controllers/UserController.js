@@ -23,6 +23,8 @@ const UserController = () => {
     try {
       const { pw, salt } = util.doCipher(req.body.password);
 
+      if (!req.body.username) next(400);
+      
       const userData = {
         username: req.body.username,
         password: pw,
